@@ -37,7 +37,7 @@ class Dubla extends DublaRaw {
     
     public static function encode($str) {
         $len = \strlen($str);
-        $num64arr = AltBase64::encodeBytes($str, $len);
+        $num64arr = AltBase64::encodeBytes($str, 4 * $len / 3);
         if ($num64arr) {
             // successful encoded into AltBase64
             $bytesStr = self::Num64ArrToBytes($num64arr, 51);
