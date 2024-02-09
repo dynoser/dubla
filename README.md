@@ -1,6 +1,14 @@
 # Dubla
 
-`Dubla` is a data encoding based on the following 1024 characters:
+`Dubla` encoding scheme allows to almost halve the number of characters that the text takes up.
+
+This is achieved through the use of two factors:
+ 1) Base-1024 charset;
+ 2) AltBase64 inside.
+
+### 1. Base-1024 charset.
+
+This data encoding based on the following 1024 characters (10 bits encoded per each character space):
 
 ```php
 $charSet =
@@ -22,11 +30,31 @@ $charSet =
   . 'ՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖւփՙ՚ք՜ֆ՞օևաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտ'
 ;
 ```
+The character set used consists of 1024 different 2-byte UTF-8 characters.
 
-This encoding scheme allows you to almost halve the number of characters that the text takes up.
-The character set used consists of 1024 different 2-byte UTF-8 characters, allowing 10 bits to be encoded in each character space.
+### 2. AltBase64 inside.
 
-### Prefix and postix
+AltBase64 encoding is additionally used within the Duble encoding.
+
+Allows you to reduce the number of chars, especially effective for encoding Cyrillic text.
+
+## Prefix and postix
 
 Dubla encoding uses an optional prefix `¨` and postfix `·` to indicate where the encoded data begins and ends.
 If these delimiters are present, then only the characters between them are used during decoding.
+These symbols are used only to facilitate visual and automatic recognition of the locations where Dubla encoded data resides
+
+## Example
+
+```text
+Man is distinguished, not only by his reason, but by this singular passion from
+other animals, which is a lust of the mind, that by a  perseverance of delight in
+the continued and indefatigable generation  of knowledge, exceeds the short vehemence
+of any carnal pleasure
+```
+
+Encoded in Dubla:
+```text
+¨ңÀӾńѸ©ǤҠӆȂĈʄùƸӎǿθӋɏ΅ξĲċԑĀĈԍϏ΅ǓևȣԓĲċԒŃǙǋÄʸՀǤΠԍաȄԌգόʄǟ°ӈƀíŤեΜ²ĿΡžÏέǒǿθȾǱғԌŃǎǾǱҁƾÖƸþ
+ƱąńȑĄÍáƸԅևҐшġӏԈƟόʄևθӓŃȐǃևôƾŃǌǅÄҠɀÒғԆăǑĀǲøӾơʸЍƥάǃġœԄȰΐǃǯόʄդΜԑǿϔǇăÐӂďθȾÃȣԂÄǴËգҬǀǥĄǳÀ·
+```
