@@ -3,10 +3,15 @@ namespace dynoser\dubla;
 
 class Dubla extends DublaRaw {
     
+    public static $gzEnabled = true;
+    
     public static function decode($str) {
         $bytesStr = DublaRaw::decodeBytes($str);
-        if (\substr($bytesStr, 0, 1) === \chr(196)) {
+        switch(\substr($bytesStr, 0, 1)) {
+        case \chr(196): // 51 << 2 + 0
             return \substr($bytesStr, 1);
+        case \chr(197): // 51 << 2 + 1
+            return \gzinflate(\substr($bytesStr, 1));
         }
         $b64str = \base64_encode($bytesStr);
         $b64len = \strlen($b64str);
@@ -15,11 +20,9 @@ class Dubla extends DublaRaw {
             $newLen--;
         }
         switch($newLen % 3) {
-            case 1:
-                $newLen -= 1;
-                break;
-            case 2:
-                $newLen -= 1;
+        case 1:
+        case 2:
+            $newLen -= 1;
         }
         if ($newLen !== $b64len) {
             $b64str = \substr($b64str, 0, $newLen);
@@ -37,13 +40,21 @@ class Dubla extends DublaRaw {
     
     public static function encode($str) {
         $len = \strlen($str);
-        $num64arr = AltBase64::encodeBytes($str, 4 * $len / 3);
+        $maxLen = 4 * $len / 3;
+        $num64arr = AltBase64::encodeBytes($str, $maxLen);
         if ($num64arr) {
             // successful encoded into AltBase64
             $bytesStr = self::Num64ArrToBytes($num64arr, 51);
         } else {
             // encode in binary-mode with 49-low 6-bit AltBase64 prefix 
             $bytesStr = \chr(196) . $str;
+        }
+        if (self::$gzEnabled) {
+            $noGzLen = \strlen($bytesStr);
+            $gzStr = \gzdeflate($str, 9);
+            if ($gzStr && \strlen($gzStr) < $noGzLen) {
+                $bytesStr = \chr(197) . $gzStr;
+            }
         }
         return DublaRaw::encodeBytes($bytesStr);
     }

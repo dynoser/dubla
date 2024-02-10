@@ -4,7 +4,7 @@
 
 This is achieved through the use of two factors:
  1) Base-1024 charset;
- 2) AltBase64 inside.
+ 2) Compression inside (AltBase64 and/or Gzip).
 
 ### 1. Base-1024 charset.
 
@@ -32,11 +32,13 @@ $charSet =
 ```
 The character set used consists of 1024 different 2-byte UTF-8 characters.
 
-### 2. AltBase64 inside.
+### 2. AltBase64 and/or Gzip inside.
 
 AltBase64 encoding is additionally used within the Duble encoding.
 
 Allows you to reduce the number of chars, especially effective for encoding Cyrillic text.
+
+Optionally, the gzip compression algorithm can be used (Deflate compress 1.3, RFC 1951).
 
 ## Prefix and postix
 
@@ -53,8 +55,8 @@ the continued and indefatigable generation  of knowledge, exceeds the short vehe
 of any carnal pleasure
 ```
 
-Encoded in Dubla:
+Dubla encoded:
 ```text
-¨ңÀӾńѸ©ǤҠӆȂĈʄùƸӎǿθӋɏ΅ξĲċԑĀĈԍϏ΅ǓևȣԓĲċԒŃǙǋÄʸՀǤΠԍաȄԌգόʄǟ°ӈƀíŤեΜ²ĿΡžÏέǒǿθȾǱғԌŃǎǾǱҁƾÖƸþ
-ƱąńȑĄÍáƸԅևҐшġӏԈƟόʄևθӓŃȐǃևôƾŃǌǅÄҠɀÒғԆăǑĀǲøӾơʸЍƥάǃġœԄȰΐǃǯόʄդΜԑǿϔǇăÐӂďθȾÃȣԂÄǴËգҬǀǥĄǳÀ·
+¨ҔјոɱҌ°ҠӗӄÅϩȃƢΈûґϏýÍћƿŏȫҬʶǥփϐǝȎ՚ϩСϼɃȖƮЩȆջδՌգʢӔӮҨүФѼӥԿǣòȻϚõĺщӪҽсôӓΩѿΙÍʤȐβѰäՖɦøӕϤѳղԀāʦճҴϡ
+ɮüυĕƻϐʯъĶϜƜɂʎĎ§ҩëωՙâǶьՔӖÁѿбևИբÙև¦ʽÅԊԫʣҷƉƯҊфɴĦω¼ȞɞԣՄʰ·
 ```
